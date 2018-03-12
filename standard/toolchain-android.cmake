@@ -1,8 +1,8 @@
 set(CMAKE_SYSTEM_NAME Android)
 set(CMAKE_SYSTEM_VERSION 21)
-find_path(CMAKE_ANDROID_STANDALONE_TOOLCHAIN sysroot/usr/lib/libandroid.so PATHS
-  /opt/android-standalone-toolchain
-)
+set(BUILD_ARM 1)
+set(BUILD_ANDROID 1)
+
 if(NOT CMAKE_ANDROID_STANDALONE_TOOLCHAIN)
   message(FATAL_ERROR "CMAKE_ANDROID_STANDALONE_TOOLCHAIN could not be located. Have you installed the NDK?")
 endif()

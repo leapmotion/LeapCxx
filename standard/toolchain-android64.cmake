@@ -1,3 +1,9 @@
+set(BUILD_64_BIT 1)
+set(BUILD_ANDROID64 1)
 set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
-include(${CMAKE_CURRENT_LIST_DIR}/toolchain-android.cmake)
 
+find_path(CMAKE_ANDROID_STANDALONE_TOOLCHAIN sysroot/usr/lib/libandroid.so PATHS
+  /opt/android-standalone-toolchain-4.9-aarch64
+)
+
+include(${CMAKE_CURRENT_LIST_DIR}/toolchain-android.cmake)

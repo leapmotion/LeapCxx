@@ -1,5 +1,3 @@
-set(BUILD_64_BIT 1)
-set(BUILD_ANDROID64 1)
 set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
 
 find_path(CMAKE_ANDROID_STANDALONE_TOOLCHAIN sysroot/usr/lib/libandroid.so PATHS

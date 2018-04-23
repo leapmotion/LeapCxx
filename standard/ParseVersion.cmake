@@ -1,0 +1,15 @@
+function(parse_version OUT_PREFIX VERSION)
+  set(_semver_regex "^([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([^+]*)\\+?(.*)$")
+  string(REGEX MATCH "${_semver_regex}" "" "${VERSION}")
+
+  if(CMAKE_MATCH_COUNT LESS 3)
+    message(FATAL_ERROR "Version number ${VERSION} is malformed")
+  endif()
+
+  set(${OUT_PREFIX}_VERSION ${VERSION} PARENT_SCOPE)
+  set(${OUT_PREFIX}_VERSION_MAJOR ${CMAKE_MATCH_1} PARENT_SCOPE)
+  set(${OUT_PREFIX}_VERSION_MINOR ${CMAKE_MATCH_2} PARENT_SCOPE)
+  set(${OUT_PREFIX}_VERSION_PATCH ${CMAKE_MATCH_3} PARENT_SCOPE)
+  set(${OUT_PREFIX}_VERSION_PRERELEASE ${CMAKE_MATCH_4} PARENT_SCOPE)
+  set(${OUT_PREFIX}_VERSION_METADATA ${CMAKE_MATCH_5} PARENT_SCOPE)
+endfunction()

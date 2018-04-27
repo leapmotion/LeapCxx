@@ -3,6 +3,7 @@ include(version.cmake)
 include("standard/Standard.cmake")
 
 project(LeapC++ VERSION ${LeapC++_VERSION})
+parse_version(LeapC++ ${LeapC++_VERSION})
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 

@@ -19,9 +19,9 @@ target_include_directories(LeapC++ PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 if(BUILD_MAC)
   set_target_properties(LeapC++ PROPERTIES LINK_FLAGS "${LINK_FLAGS} -compatibility_version ${LEAP_COMPATIBILITY_VERSION_MAJOR}.${LEAP_COMPATIBILITY_VERSION_MINOR}.${LEAP_COMPATIBILITY_VERSION_PATCH} -current_version ${LEAP_VERSION_MAJOR}.${LEAP_VERSION_MINOR}.${LEAP_VERSION_PATCH}")
 endif()
-
-find_package(LeapC)
-target_link_libraries(LeapC++ LeapC::LeapC)
+set(CMAKE_LIBRARY_ARCHITECTURE x64)
+find_package(LeapSDK 4.0.0)
+target_link_libraries(LeapC++ LeapSDK::LeapC)
 
 option(BUILD_TESTING "Build Tests" ON)
 if(BUILD_TESTING)

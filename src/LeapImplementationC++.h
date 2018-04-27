@@ -8,7 +8,7 @@
 #pragma once
 
 #include "LeapC++.h"
-#include "LeapC/LeapC.h"
+#include "LeapC.h"
 #include <atomic>
 #include <deque>
 #include <map>

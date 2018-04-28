@@ -8,3 +8,4 @@ target_include_directories(
   fused-src
 )
 target_sources(gtest INTERFACE ${CMAKE_CURRENT_LIST_DIR}/fused-src/gtest/gtest_main.cc)
+target_compile_definitions(gtest PUBLIC _SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING)

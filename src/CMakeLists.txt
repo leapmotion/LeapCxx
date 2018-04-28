@@ -6,15 +6,16 @@ set(LEAP_CPP_SRCS
   LeapMath.h
 )
 
+option(BUILD_SHARED_LIBS "Build as a shared Library (.dll/.so/.dylib)" OFF)
 set(ORIGINAL_FILE_NAME "LeapC++.dll")
 configure_file(LeapC++.rc.in ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc @ONLY)
-
-add_library(LeapC++ SHARED ${LEAP_CPP_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc)
-set_target_properties(LeapC++ PROPERTIES
-  FOLDER "API"
-  COMPILE_FLAGS "-DLEAP_CPP_IMPLEMENTATION=1"
-)
-target_include_directories(LeapC++ PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(LeapC++ ${LEAP_CPP_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc)
+set_property(TARGET LeapC++ PROPERTY FOLDER "API")
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(LeapC++ PRIVATE LEAP_CPP_IMPLEMENTATION=1)
+else()
+  target_compile_definitions(LeapC++ PUBLIC LEAP_CPP_STATIC)
+endif()
 
 if(BUILD_MAC)
   set_target_properties(LeapC++ PROPERTIES LINK_FLAGS "${LINK_FLAGS} -compatibility_version ${LEAP_COMPATIBILITY_VERSION_MAJOR}.${LEAP_COMPATIBILITY_VERSION_MINOR}.${LEAP_COMPATIBILITY_VERSION_PATCH} -current_version ${LEAP_VERSION_MAJOR}.${LEAP_VERSION_MINOR}.${LEAP_VERSION_PATCH}")

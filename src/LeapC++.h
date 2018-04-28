@@ -18,20 +18,20 @@
 
 // Define Leap export macros
 #ifndef LEAP_EXPORT
-#if defined(_MSC_VER) // Visual C++
-#if LEAP_CPP_INTERNAL
-#define LEAP_EXPORT
-#elif LEAP_CPP_IMPLEMENTATION
-#define LEAP_EXPORT __declspec(dllexport)
-#else
-#define LEAP_EXPORT __declspec(dllimport)
-#endif
-#define LEAP_EXPORT_CLASS
-#elif !defined(SWIG)
-#define LEAP_EXPORT __attribute__((visibility("default")))
-#else
-#define LEAP_EXPORT
-#endif
+  #if defined(_MSC_VER) // Visual C++
+    #if defined(LEAP_CPP_STATIC)
+      #define LEAP_EXPORT
+    #elif LEAP_CPP_IMPLEMENTATION
+      #define LEAP_EXPORT __declspec(dllexport)
+    #else
+      #define LEAP_EXPORT __declspec(dllimport)
+    #endif
+    #define LEAP_EXPORT_CLASS
+  #elif !defined(SWIG)
+    #define LEAP_EXPORT __attribute__((visibility("default")))
+  #else
+    #define LEAP_EXPORT
+  #endif
 #endif
 
 #ifndef LEAP_EXPORT_CLASS

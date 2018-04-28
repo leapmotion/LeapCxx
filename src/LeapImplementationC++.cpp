@@ -77,14 +77,14 @@ float DeviceImplementation::distanceToBoundary(const Vector& position) const {
 
     // Check horizontal walls
     float m = 1.0f / tanH;
-    const double x = (m * position.y + fabs(position.x)) / (m*m + 1.0);
-    double y = m * x;
+    const float x = (m * position.y + fabs(position.x)) / (m*m + 1.0f);
+    float y = m * x;
     Vector horiz(x, y, position.z);
     if (position.x < 0) { horiz.x *= -1; }
 
     // Check vertical walls
     m = 1.0f / tanV;
-    const double z = (m * position.y + std::fabs(position.z)) / (m*m + 1.0);
+    const float z = (m * position.y + std::fabs(position.z)) / (m*m + 1.0f);
     y = m * z;
     Vector vert(position.x, y, z);
     if (position.z < 0) { vert.z *= -1; }

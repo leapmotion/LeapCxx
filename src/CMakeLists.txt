@@ -1,9 +1,9 @@
 set(LEAP_CPP_SRCS
   LeapC++.cpp
-  LeapC++.h
+  ${CMAKE_SOURCE_DIR}/include/LeapC++/LeapC++.h
   LeapImplementationC++.cpp
   LeapImplementationC++.h
-  LeapMath.h
+  ${CMAKE_SOURCE_DIR}/include/LeapC++/LeapMath.h
 )
 
 option(BUILD_SHARED_LIBS "Build as a shared Library (.dll/.so/.dylib)" OFF)
@@ -11,6 +11,8 @@ set(ORIGINAL_FILE_NAME "LeapC++.dll")
 configure_file(LeapC++.rc.in ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc @ONLY)
 add_library(LeapC++ ${LEAP_CPP_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc)
 set_property(TARGET LeapC++ PROPERTY FOLDER "API")
+target_include_directories(LeapC++ PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/include)
+
 if(BUILD_SHARED_LIBS)
   target_compile_definitions(LeapC++ PRIVATE LEAP_CPP_IMPLEMENTATION=1)
 else()

@@ -11,6 +11,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 add_subdirectory(contrib)
 add_subdirectory(src)
 
+option(BUILD_SAMPLES "Build the samples" ON)
+if(BUILD_SAMPLES)
+  add_subdirectory(samples)
+endif()
+
 # Now we can generate the version and install stuff
 #generate_version()
 combined_installer(

@@ -22,10 +22,18 @@ if(WIN32)
   target_compile_options(LeapC++ PUBLIC "/wd4996")
 endif()
 
-if(BUILD_MAC)
+if(APPLE)
   set_target_properties(LeapC++ PROPERTIES LINK_FLAGS "${LINK_FLAGS} -compatibility_version ${LEAP_COMPATIBILITY_VERSION_MAJOR}.${LEAP_COMPATIBILITY_VERSION_MINOR}.${LEAP_COMPATIBILITY_VERSION_PATCH} -current_version ${LEAP_VERSION_MAJOR}.${LEAP_VERSION_MINOR}.${LEAP_VERSION_PATCH}")
 endif()
-set(CMAKE_LIBRARY_ARCHITECTURE x64)
+
+if(WIN32)
+  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(CMAKE_LIBRARY_ARCHITECTURE x64)
+  else()
+    set(CMAKE_LIBRARY_ARCHITECTURE x86)
+  endif()
+endif()
+
 find_package(LeapSDK 4.0.0)
 target_link_libraries(LeapC++ LeapSDK::LeapC)
 
@@ -53,7 +61,7 @@ if( BUILD_SWIG)
   set(LEAP_JAVA_API_SRCS ${CMAKE_CURRENT_BINARY_DIR}/LeapJava.rc)
   set(LEAP_PYTHON_API_SRCS ${CMAKE_CURRENT_BINARY_DIR}/LeapPython.rc)
 
-  if(BUILD_ANDROID)
+  if(ANDROID)
     # workaround as Bionic loader does not respect rpath
     set(LEAP_JAVA_API_SRCS ${LEAP_API_SRCS} ${LEAP_JAVA_API_SRCS})
     set(LEAP_PYTHON_API_SRCS ${LEAP_API_SRCS} ${LEAP_PYTHON_API_SRCS})
@@ -70,7 +78,7 @@ if( BUILD_SWIG)
     # OS X: Java_JAVAC_EXECUTABLE always set due to /usr/bin/javac placeholder
     #       Using FindJava.cmake's check for "No Java runtime present" string
     set(LEAP_API_SWIG_JAVA ${CMAKE_CURRENT_BINARY_DIR}/leap_api_swig_Java)
-    if(BUILD_WINDOWS)
+    if(WIN32)
       add_custom_command(OUTPUT ${LEAP_API_SWIG_JAVA}
                          COMMAND ${CMAKE_COMMAND} -E touch ${LEAP_API_SWIG_JAVA}
                          COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/Java
@@ -97,7 +105,7 @@ if( BUILD_SWIG)
     endif()
     set_property(TARGET LeapJava PROPERTY FOLDER "API")
 
-    if(BUILD_MAC)
+    if(APPLE)
       set_target_properties(LeapJava PROPERTIES SUFFIX .dylib)
     endif()
 
@@ -107,9 +115,9 @@ if( BUILD_SWIG)
       endif()
     endif()
 
-    if(NOT MSVC)
+    if(NOT WIN32)
       # Suppress compiler warnings from auto-generated wrapper file
-      if(BUILD_ANDROID)
+      if(ANDROID)
         # gcc makes it nigh impossible to use -Werror with void** conversions
         set(_fpermissive_war "-Wno-error")
       endif()
@@ -117,13 +125,13 @@ if( BUILD_SWIG)
     endif()
 
     target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include)
-    if(BUILD_WINDOWS)
+    if(WIN32)
       target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include/win32)
-    elseif(NOT BUILD_MAC)
+    elseif(NOT APPLE)
       target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include/linux)
     endif()
 
-    if(BUILD_ANDROID)
+    if(ANDROID)
       set_target_properties(LeapJava PROPERTIES COMPILE_FLAGS "-DLEAP_API_IMPLEMENTATION=1")
       target_link_libraries(LeapJava Autowiring::Autowiring Calibration Networking SystemUtility)
       set_target_properties(LeapJava PROPERTIES LINK_FLAGS_RELEASE "-Xlinker -s")
@@ -182,21 +190,21 @@ if( BUILD_SWIG)
     set_property(TARGET LeapPython PROPERTY FOLDER "API")
     target_imported_libraries(LeapPython PythonLibs::PythonLibs)
 
-    if(MSVC)
+    if(WIN32)
       set_target_properties(LeapPython PROPERTIES COMPILE_FLAGS "-DHAVE_ROUND=1")
     else()
-      if(BUILD_MAC)
+      if(APPLE)
         if(NOT USE_DEBUG_SYMBOLS)
           set_target_properties(LeapPython PROPERTIES LINK_FLAGS_RELEASE "-Xlinker -S -Xlinker -x -Xlinker -exported_symbol -Xlinker _PyInit_LeapPython -Xlinker -dead_strip -Xlinker -dead_strip_dylibs")
         endif()
         # Suppress compiler warnings from auto-generated wrapper file
         set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/Python/LeapPYTHON_wrap.cpp PROPERTY COMPILE_FLAGS "-Wno-parentheses-equality")
-      elseif(BUILD_LINUX AND NOT BUILD_ANDROID)
+      elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
         target_link_libraries(LeapPython -lutil)
       endif()
     endif()
 
-    if(BUILD_ANDROID)
+    if(ANDROID)
       set_target_properties(LeapPython PROPERTIES COMPILE_FLAGS "-DLEAP_API_IMPLEMENTATION=1")
       target_link_libraries(LeapPython Autowiring::Autowiring Calibration Networking SystemUtility)
       set_target_properties(LeapPython PROPERTIES LINK_FLAGS_RELEASE "-Xlinker -s")

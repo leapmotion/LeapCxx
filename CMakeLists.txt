@@ -7,6 +7,16 @@ parse_version(LeapC++ ${LeapC++_VERSION})
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
+if(WIN32)
+  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(CMAKE_LIBRARY_ARCHITECTURE x64)
+  else()
+    set(CMAKE_LIBRARY_ARCHITECTURE x86)
+  endif()
+endif()
+
+find_package(LeapSDK 4.0.0)
+
 # Recurse through source directories
 add_subdirectory(contrib)
 add_subdirectory(src)

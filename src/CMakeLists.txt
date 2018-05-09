@@ -26,15 +26,6 @@ if(APPLE)
   set_target_properties(LeapC++ PROPERTIES LINK_FLAGS "${LINK_FLAGS} -compatibility_version ${LEAP_COMPATIBILITY_VERSION_MAJOR}.${LEAP_COMPATIBILITY_VERSION_MINOR}.${LEAP_COMPATIBILITY_VERSION_PATCH} -current_version ${LEAP_VERSION_MAJOR}.${LEAP_VERSION_MINOR}.${LEAP_VERSION_PATCH}")
 endif()
 
-if(WIN32)
-  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(CMAKE_LIBRARY_ARCHITECTURE x64)
-  else()
-    set(CMAKE_LIBRARY_ARCHITECTURE x86)
-  endif()
-endif()
-
-find_package(LeapSDK 4.0.0)
 target_link_libraries(LeapC++ LeapSDK::LeapC)
 
 include(CMakeDependentOption)

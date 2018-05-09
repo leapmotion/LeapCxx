@@ -37,13 +37,14 @@ endif()
 find_package(LeapSDK 4.0.0)
 target_link_libraries(LeapC++ LeapSDK::LeapC)
 
-option(BUILD_TESTING "Build Tests" ON)
+include(CMakeDependentOption)
+#The tests require a static build of LeapC++
+cmake_dependent_option(BUILD_TESTING "Build Tests" ON "NOT BUILD_SHARED_LIBS" OFF)
 if(BUILD_TESTING)
   add_subdirectory(testing)
 endif()
 
 #Swig requires shared libraries
-include(CMakeDependentOption)
 cmake_dependent_option(BUILD_SWIG "Build Java & Python Swig bindings" ON "BUILD_SHARED_LIBS" OFF)
 if(NOT BUILD_SWIG)
   return()

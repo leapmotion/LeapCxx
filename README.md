@@ -1,4 +1,4 @@
-# LeapCXX
+# LeapCxx
 Implementation of older C++ API using LeapC
 
 ###

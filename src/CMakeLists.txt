@@ -1,9 +1,9 @@
 set(LEAP_CPP_SRCS
   LeapC++.cpp
-  ${CMAKE_SOURCE_DIR}/include/LeapC++/LeapC++.h
+  LeapC++.h
   LeapImplementationC++.cpp
   LeapImplementationC++.h
-  ${CMAKE_SOURCE_DIR}/include/LeapC++/LeapMath.h
+  LeapMath.h
 )
 
 option(BUILD_SHARED_LIBS "Build as a shared Library (.dll/.so/.dylib)" OFF)
@@ -121,12 +121,8 @@ if(Java_JAVAC_EXECUTABLE AND NOT Java_JAVA_EXECUTABLE MATCHES "NOTFOUND")
     set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/Java/LeapC++JAVA_wrap.cpp PROPERTY COMPILE_FLAGS "-Wno-unused-function ${_fpermissive_war}")
   endif()
 
-  target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include)
-  if(WIN32)
-    target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include/win32)
-  elseif(NOT APPLE)
-    target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include/linux)
-  endif()
+  target_include_directories(LeapJava PUBLIC ${JAVA_INCLUDE_PATH})
+  target_include_directories(LeapJava PUBLIC ${JAVA_INCLUDE_PATH2})
 
   if(ANDROID)
     set_target_properties(LeapJava PROPERTIES COMPILE_FLAGS "-DLEAP_API_IMPLEMENTATION=1")

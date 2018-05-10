@@ -15,6 +15,8 @@ if(WIN32)
   endif()
 endif()
 
+find_package(jni 8.0)
+find_package(swig 3.0.12)
 find_package(LeapSDK 4.0.0)
 
 # Recurse through source directories

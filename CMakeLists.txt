@@ -15,10 +15,26 @@ if(WIN32)
   endif()
 endif()
 
-find_package(jni 8.0)
-find_package(PythonInterp)
-find_package(PythonLibs)
-find_package(swig 3.0.12)
+if(BUILD_SWIG)
+  find_package(PythonInterp)
+  find_package(PythonLibs)
+  if(UNIX)
+    # find_package(swig) doesn't work on Linux so we find the executable
+    find_program(SWIG_EXECUTABLE swig)
+    # find_package(jni) doesn't work on Linux so we use JAVA_HOME
+    if(DEFINED ENV{JAVA_HOME})
+      # these are typically defined by find_package(jni)
+      set(JAVA_INCLUDE_PATH "$ENV{JAVA_HOME}/include")
+      set(JAVA_INCLUDE_PATH2 "$ENV{JAVA_HOME}/include/linux")
+    else()
+      message(SEND_ERROR "You must set the environment variable JAVA_HOME.")
+    endif()
+  else()
+    find_package(jni 8.0)
+    find_package(swig 3.0)
+  endif()
+endif()
+
 find_package(LeapSDK 4.0.0)
 
 # Recurse through source directories

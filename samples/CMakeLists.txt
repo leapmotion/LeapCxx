@@ -1,6 +1,9 @@
 add_executable(SampleCxx Sample.cpp)
 set_property(TARGET SampleCxx PROPERTY FOLDER "Samples")
 target_link_libraries(SampleCxx PUBLIC LeapC++)
+if(UNIX)
+  target_link_libraries(SampleCxx PRIVATE -lpthread -lm)
+endif()
 target_compile_features(SampleCxx PRIVATE cxx_std_11)
 add_custom_command(TARGET SampleCxx POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PROPERTY:LeapSDK::LeapC,IMPORTED_LOCATION_RELEASE> $<TARGET_FILE_DIR:SampleCxx>)

@@ -16,6 +16,8 @@ if(WIN32)
 endif()
 
 find_package(jni 8.0)
+find_package(PythonInterp)
+find_package(PythonLibs)
 find_package(swig 3.0.12)
 find_package(LeapSDK 4.0.0)
 
@@ -32,5 +34,5 @@ endif()
 #generate_version()
 combined_installer(
   VENDOR "Leap Motion"
-  CONTACT "cmercenary@gmail.com"
+  CONTACT "wgray@leapmotion.com"
 )

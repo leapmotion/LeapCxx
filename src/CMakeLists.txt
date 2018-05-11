@@ -1,3 +1,5 @@
+set(PROJECT_EXECUTABLE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR})
+
 set(LEAP_CPP_SRCS
   LeapC++.cpp
   LeapC++.h
@@ -181,7 +183,8 @@ if(PYTHONLIBS_FOUND)
   endif()
 
   set_property(TARGET LeapPython PROPERTY FOLDER "API")
-  target_imported_libraries(LeapPython PythonLibs::PythonLibs)
+  target_link_libraries(LeapPython ${PYTHON_LIBRARY})
+  target_include_directories(LeapPython PUBLIC ${PYTHON_INCLUDE_DIR})
 
   if(WIN32)
     set_target_properties(LeapPython PROPERTIES COMPILE_FLAGS "-DHAVE_ROUND=1")

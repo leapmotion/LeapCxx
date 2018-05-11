@@ -16,8 +16,11 @@ if(WIN32)
 endif()
 
 if(BUILD_SWIG)
-  find_package(PythonInterp)
-  find_package(PythonLibs)
+  find_package(PythonInterp 3)
+  find_package(PythonLibs 3)
+  if(NOT (DEFINED PYTHON_EXECUTABLE AND DEFINED PYTHON_INCLUDE_DIR AND DEFINED PYTHON_LIBRARY))
+    message(SEND_ERROR "Python 3 not found.")
+  endif()
   if(UNIX)
     # find_package(swig) doesn't work on Linux so we find the executable
     find_program(SWIG_EXECUTABLE swig)

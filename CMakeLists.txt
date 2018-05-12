@@ -21,7 +21,7 @@ if(BUILD_SWIG)
   if(NOT (DEFINED PYTHON_EXECUTABLE AND DEFINED PYTHON_INCLUDE_DIR AND DEFINED PYTHON_LIBRARY))
     message(SEND_ERROR "Python 3 not found.")
   endif()
-  if(UNIX)
+  if(UNIX AND NOT APPLE)
     # find_package(swig) doesn't work on Linux so we find the executable
     find_program(SWIG_EXECUTABLE swig)
     # find_package(jni) doesn't work on Linux so we use JAVA_HOME

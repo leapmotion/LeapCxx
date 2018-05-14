@@ -27,4 +27,10 @@ add_custom_target(SamplePy
         SOURCES Sample.py)
 set_property(TARGET SamplePy PROPERTY FOLDER "Samples")
 
-#TODO: Compile the python & Java samples if possible
+#Compile Java Sample
+add_custom_target(SampleJava
+        COMMAND ${Java_JAVAC_EXECUTABLE} -cp "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/*" -d "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}" ${CMAKE_CURRENT_LIST_DIR}/Sample.java
+        DEPENDS LeapJava
+        VERBATIM
+        SOURCES Sample.java)
+set_property(TARGET SampleJava PROPERTY FOLDER "Samples")

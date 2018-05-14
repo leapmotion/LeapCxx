@@ -7,6 +7,7 @@ endif()
 target_compile_features(SampleCxx PRIVATE cxx_std_11)
 add_custom_command(TARGET SampleCxx POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PROPERTY:LeapSDK::LeapC,IMPORTED_LOCATION_RELEASE> $<TARGET_FILE_DIR:SampleCxx>)
+
 if(BUILD_SHARED_LIBS)
   add_custom_command(TARGET SampleCxx POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:LeapC++> $<TARGET_FILE_DIR:SampleCxx>)
@@ -15,5 +16,15 @@ endif()
 if(NOT BUILD_SWIG)
   return()
 endif()
+
+#Compile Python Sample
+add_custom_target(SamplePy
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_LIST_DIR}/Sample.py ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+        COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Sample.py
+        DEPENDS LeapPython
+        WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}"
+        VERBATIM
+        SOURCES Sample.py)
+set_property(TARGET SamplePy PROPERTY FOLDER "Samples")
 
 #TODO: Compile the python & Java samples if possible

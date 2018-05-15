@@ -1,9 +1,11 @@
+set(PROJECT_EXECUTABLE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR})
+
 set(LEAP_CPP_SRCS
   LeapC++.cpp
-  ${CMAKE_SOURCE_DIR}/include/LeapC++/LeapC++.h
+  LeapC++.h
   LeapImplementationC++.cpp
   LeapImplementationC++.h
-  ${CMAKE_SOURCE_DIR}/include/LeapC++/LeapMath.h
+  LeapMath.h
 )
 
 option(BUILD_SHARED_LIBS "Build as a shared Library (.dll/.so/.dylib)" OFF)
@@ -41,11 +43,11 @@ if(NOT BUILD_SWIG)
   return()
 endif()
 
-set(LEAP_CPP_SWIG_INTERFACES
+set(LEAP_API_SWIG_INTERFACES
   LeapC++.i
 )
 
-set(LEAP_CPP_SWIG_INTERFACES_DEPENDENCIES
+set(LEAP_API_SWIG_INTERFACES_DEPENDENCIES
   LeapC++.h
   LeapMath.h
 )
@@ -101,6 +103,10 @@ if(Java_JAVAC_EXECUTABLE AND NOT Java_JAVA_EXECUTABLE MATCHES "NOTFOUND")
     swig_add_library(LeapJava TYPE MODULE LANGUAGE java SOURCES ${LEAP_API_SWIG_INTERFACES} ${LEAP_JAVA_API_SRCS})
   endif()
   set_property(TARGET LeapJava PROPERTY FOLDER "API")
+    set_target_properties(LeapJava PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR})
 
   if(APPLE)
     set_target_properties(LeapJava PROPERTIES SUFFIX .dylib)
@@ -121,12 +127,8 @@ if(Java_JAVAC_EXECUTABLE AND NOT Java_JAVA_EXECUTABLE MATCHES "NOTFOUND")
     set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/Java/LeapC++JAVA_wrap.cpp PROPERTY COMPILE_FLAGS "-Wno-unused-function ${_fpermissive_war}")
   endif()
 
-  target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include)
-  if(WIN32)
-    target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include/win32)
-  elseif(NOT APPLE)
-    target_include_directories(LeapJava PUBLIC ${EXTERNAL_LIBRARY_DIR}/jdk/include/linux)
-  endif()
+  target_include_directories(LeapJava PUBLIC ${JAVA_INCLUDE_PATH})
+  target_include_directories(LeapJava PUBLIC ${JAVA_INCLUDE_PATH2})
 
   if(ANDROID)
     set_target_properties(LeapJava PROPERTIES COMPILE_FLAGS "-DLEAP_API_IMPLEMENTATION=1")
@@ -185,7 +187,13 @@ if(PYTHONLIBS_FOUND)
   endif()
 
   set_property(TARGET LeapPython PROPERTY FOLDER "API")
-  target_imported_libraries(LeapPython PythonLibs::PythonLibs)
+  set_target_properties(LeapPython PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR})
+
+  target_link_libraries(LeapPython ${PYTHON_LIBRARY})
+  target_include_directories(LeapPython PUBLIC ${PYTHON_INCLUDE_DIR})
 
   if(WIN32)
     set_target_properties(LeapPython PROPERTIES COMPILE_FLAGS "-DHAVE_ROUND=1")

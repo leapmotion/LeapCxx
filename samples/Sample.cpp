@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <cstring>
-#include "LeapC++/LeapC++.h"
+#include "LeapC++.h"
 
 using namespace Leap;
 

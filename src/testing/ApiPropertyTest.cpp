@@ -1,4 +1,4 @@
-#include "LeapC++/LeapC++.h"
+#include "LeapC++.h"
 #include <gtest/gtest.h>
 
 TEST(ApiPropertyTest, ValidateVectorProperties) {

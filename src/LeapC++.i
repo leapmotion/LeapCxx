@@ -424,7 +424,6 @@ extern "C" BOOL WINAPI DllMain(
   static {
     try {
       System.loadLibrary("LeapC");
-      System.loadLibrary("LeapC++");
       System.loadLibrary("LeapJava");
     } catch (UnsatisfiedLinkError e) {
       System.err.println("Native code library failed to load. \n" + e);

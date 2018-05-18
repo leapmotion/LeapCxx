@@ -47,13 +47,14 @@ samples manually, follow the steps below.
 Java
 ```
 cd LeapCxx/samples
-javac -cp .:<LeapCxx_build_dir>/bin/LeapJava.jar Sample.java
-java -Djava.library.path="<LeapCxx_build_dir>/bin/" -cp .:<LeapCxx_build_dir>/bin/LeapJava.jar Sample
+javac -cp .;<LeapCxx_build_dir>/bin/<config_subdir>/LeapJava.jar Sample.java
+java -Djava.library.path="<LeapCxx_build_dir>/bin/<config_subdir>" -cp .;<LeapCxx_build_dir>/bin/<config_subdir>LeapJava.jar Sample
 ```
 Python
 ```
-cd LeapCxx/samples
-PYTHONPATH=$PYTHONPATH:<LeapCxx_build_dir>/bin/:<LeapCxx_build_dir>/lib/ python3
+cp LeapCxx/samples/Sample.py <LeapCxx_build_dir/bin/<config_subdir>/
+cd <LeapCxx_build_dir/bin/<config_subdir>
+python Sample.py
 ```
 
 ### Suggestions for future work

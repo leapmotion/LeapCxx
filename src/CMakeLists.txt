@@ -105,12 +105,6 @@ if(Java_JAVAC_EXECUTABLE AND NOT Java_JAVA_EXECUTABLE MATCHES "NOTFOUND")
     set_target_properties(LeapJava PROPERTIES SUFFIX .dylib)
   endif()
 
-  if(USE_PRODUCTION_FLAGS)
-    if(MSVC)
-      set_target_properties(LeapJava PROPERTIES LINK_FLAGS_RELEASE "/DELAYLOAD:LeapC++.dll")
-    endif()
-  endif()
-
   if(NOT WIN32)
     # Suppress compiler warnings from auto-generated wrapper file
     if(ANDROID)

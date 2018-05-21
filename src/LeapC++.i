@@ -359,8 +359,7 @@ SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 #pragma warning(disable : 4267)
 #include <windows.h>
 // When dynamically loading LeapJava.dll, set the DLL search path to look in the
-// same the directory. This will allow loading LeapC++.dll. Create LeapJava.dll
-// with the /DELAYLOAD:LeapC++.dll link option.
+// same the directory.
 extern "C" BOOL WINAPI DllMain(
     _In_ HINSTANCE hinstDLL,
     _In_ DWORD fdwReason,

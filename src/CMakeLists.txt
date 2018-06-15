@@ -8,18 +8,13 @@ set(LEAP_CPP_SRCS
   LeapMath.h
 )
 
-option(BUILD_SHARED_LIBS "Build as a shared Library (.dll/.so/.dylib)" OFF)
 set(ORIGINAL_FILE_NAME "LeapC++.dll")
 configure_file(LeapC++.rc.in ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc @ONLY)
 add_library(LeapC++ ${LEAP_CPP_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc)
 set_property(TARGET LeapC++ PROPERTY FOLDER "API")
 target_include_directories(LeapC++ PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/include)
 
-if(BUILD_SHARED_LIBS)
-  target_compile_definitions(LeapC++ PRIVATE LEAP_CPP_IMPLEMENTATION=1)
-else()
-  target_compile_definitions(LeapC++ PUBLIC LEAP_CPP_STATIC)
-endif()
+target_compile_definitions(LeapC++ PUBLIC LEAP_CPP_STATIC)
 if(WIN32)
   target_compile_options(LeapC++ PUBLIC "/wd4996")
 endif()
@@ -31,14 +26,12 @@ endif()
 target_link_libraries(LeapC++ LeapSDK::LeapC)
 
 include(CMakeDependentOption)
-#The tests require a static build of LeapC++
-cmake_dependent_option(BUILD_TESTING "Build Tests" ON "NOT BUILD_SHARED_LIBS" OFF)
+option(BUILD_TESTING "Build Tests" OFF)
 if(BUILD_TESTING)
   add_subdirectory(testing)
 endif()
 
-#Swig requires shared libraries
-cmake_dependent_option(BUILD_SWIG "Build Java & Python Swig bindings" ON "BUILD_SHARED_LIBS" OFF)
+option(BUILD_SWIG "Build Java & Python Swig bindings" OFF)
 if(NOT BUILD_SWIG)
   return()
 endif()
@@ -110,12 +103,6 @@ if(Java_JAVAC_EXECUTABLE AND NOT Java_JAVA_EXECUTABLE MATCHES "NOTFOUND")
 
   if(APPLE)
     set_target_properties(LeapJava PROPERTIES SUFFIX .dylib)
-  endif()
-
-  if(USE_PRODUCTION_FLAGS)
-    if(MSVC)
-      set_target_properties(LeapJava PROPERTIES LINK_FLAGS_RELEASE "/DELAYLOAD:LeapC++.dll")
-    endif()
   endif()
 
   if(NOT WIN32)

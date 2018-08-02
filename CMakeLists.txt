@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 include(version.cmake)
 include("standard/Standard.cmake")
 
-project(LeapC++ VERSION ${LeapC++_VERSION})
+standard_project(LeapC++ VERSION ${LeapC++_VERSION})
 
 unset(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG)
 unset(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE)

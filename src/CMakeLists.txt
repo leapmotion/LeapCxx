@@ -26,6 +26,14 @@ endif()
 target_link_libraries(LeapC++ LeapSDK::LeapC)
 
 include(CMakeDependentOption)
+
+install_headers(TARGET LeapC++ DESTINATION include/leapc++ COMPONENT LeapC++)
+install(TARGETS LeapC++ EXPORT LeapC++Targets
+  DESTINATION lib
+  COMPONENT LeapC++
+  CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+)
+
 option(BUILD_TESTING "Build Tests" OFF)
 if(BUILD_TESTING)
   add_subdirectory(testing)

@@ -12,7 +12,11 @@ set(ORIGINAL_FILE_NAME "LeapC++.dll")
 configure_file(LeapC++.rc.in ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc @ONLY)
 add_library(LeapC++ ${LEAP_CPP_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/LeapC++.rc)
 set_property(TARGET LeapC++ PROPERTY FOLDER "API")
-target_include_directories(LeapC++ PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(
+  LeapC++
+  PUBLIC
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
+)
 
 target_compile_definitions(LeapC++ PUBLIC LEAP_CPP_STATIC)
 if(WIN32)

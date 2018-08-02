@@ -46,7 +46,7 @@ if(BUILD_SAMPLES)
 endif()
 
 # Now we can generate the version and install stuff
-#generate_version()
+generate_version()
 combined_installer(
   VENDOR "Leap Motion"
   CONTACT "wgray@leapmotion.com"

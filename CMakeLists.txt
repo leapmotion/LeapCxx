@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 include(version.cmake)
 include("standard/Standard.cmake")
 
-project(LeapC++ VERSION ${LeapC++_VERSION})
+standard_project(LeapC++ VERSION ${LeapC++_VERSION})
 
 unset(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG)
 unset(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE)
@@ -46,7 +46,7 @@ if(BUILD_SAMPLES)
 endif()
 
 # Now we can generate the version and install stuff
-#generate_version()
+generate_version()
 combined_installer(
   VENDOR "Leap Motion"
   CONTACT "wgray@leapmotion.com"

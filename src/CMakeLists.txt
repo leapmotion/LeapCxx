@@ -18,7 +18,6 @@ target_include_directories(
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
 
-target_compile_definitions(LeapC++ PUBLIC LEAP_CPP_STATIC)
 if(WIN32)
   target_compile_options(LeapC++ PUBLIC "/wd4996")
 endif()
